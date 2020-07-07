@@ -20,21 +20,22 @@ function Login() {
   const [invalidCred, setInvalidCred] = useState(false);
   const [auth, setAuth] = useState(false);
 
+  // Initial retrieval of all userdata
   useEffect(() => {
     axios.get("/api/users").then((res) => {
       const formattedUsers = res.data.map((user) => user.user);
       setUsers(formattedUsers);
     });
   }, []);
-
+  // Validation for google logins
   const googleValidate = (response) => {
     let currentUser = users.filter((user) => user.email === response.profileObj.email);
     if (currentUser.length > 0) {
       Cookies.set('user', currentUser[0]);
-      setAuth(true);
+      setAuth(true); // redirect to dashboard
     }
   };
-
+// Validations for normal logins
   function validate() {
     if (email && password) {
       setErrors({ ...errors, emptyPassword: false, emptyEmail: false });
@@ -46,7 +47,8 @@ function Login() {
         Cookies.set("user", currentUser);
         setAuth(true); // redirect to dashboard
       }
-    } else {
+    } else { 
+      // Error messages for invalid or absent form input
       if (!email && !password) {
         setErrors({ errors, emptyEmail: true, emptyPassword: true });
       } else {
@@ -59,7 +61,7 @@ function Login() {
       }
     }
   }
-
+  // Checks state of 'Auth' for successful login validation
   return auth ? (
     <Redirect to="/dashboard" />
   ) : (
