@@ -14,6 +14,7 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({
     emptyPassword: false,
     emptyEmail: false,
@@ -29,11 +30,15 @@ export default function Signup() {
     });
   }, []);
 
-  function validate() {}
+  function validate() {
+    console.log(users)
+  }
 
   function googleValidate() {}
 
-  return (
+  return auth ? (
+    <Redirect to="/dashboard" />
+  ) : (
     <>
       <Nav />
       <div>
@@ -46,7 +51,7 @@ export default function Signup() {
                 id="standard-basic"
                 className="login-input"
                 label="Name"
-                value={email}
+                value={name}
                 onChange={(event) => setName(event.target.value)}
                 error={errors.emptyName}
                 helperText={
@@ -81,8 +86,8 @@ export default function Signup() {
                 className="login-input"
                 label="Confirm Password"
                 type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
                 error={errors.emptyPassword}
                 helperText={
                   errors.emptyPassword ? "Please enter a valid password." : ""
