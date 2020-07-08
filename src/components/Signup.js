@@ -6,22 +6,29 @@ import { Button, TextField } from "@material-ui/core";
 import Error from "./Error";
 import Card from "@material-ui/core/Card";
 import Cookies from "js-cookie";
-import HatchIcon from "./images/hatch-main-logo.png";
 import Nav from "./Nav";
 
 export default function Signup() {
+  // All current users in DB
   const [users, setUsers] = useState([]);
+  // State of input fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [auth, setAuth] = useState(false);
+  // Status of empty input fields
   const [error, setError] = useState({
     name: false,
     email: false,
-    password: false
-  })
-  const [errorMessage, setErrorMessage] = useState("")
+    password: false,
+    confirmPassword: false
+  });
+  // Error messages
+  const [errorMessage, setErrorMessage] = useState("");
+  const [invalidEmail, setInvalidEmail] = useState(false);
+  const [minPassLen, setMinPassLen] = useState(false);
+  const [confirmPWMatch, setConfirmPWMatch] = useState(false);
+  const [auth, setAuth] = useState(false);
 
   useEffect(() => {
     axios.get("/api/users").then((res) => {
@@ -30,23 +37,65 @@ export default function Signup() {
     });
   }, []);
 
+  function validateEmail() {
+    const emailExists = users.filter(user => user.email === email.toLowerCase())
+    console.log(emailExists)
+    if (emailExists.length > 0) {
+      setError({
+        name: false,
+        email: true,
+        password: false,
+        confirmPassword: false
+      })
+      setInvalidEmail(true);
+    } else {
+      return true;
+    }
+    return false;
+  }
+
+  function validatePassword() {
+    if (password.length < 8) {
+      setError({
+        ...error,
+        password: true
+      })
+      setMinPassLen(true);
+    } else if(password !== confirmPassword) {
+      setError({
+        ...error,
+        password: false,
+        confirmPassword: true
+      })
+      setMinPassLen(false);
+      setConfirmPWMatch(true);
+    } else {
+      setMinPassLen(false);
+      setConfirmPWMatch(false);
+      return true;
+    }
+    return false;
+  }
+
   function validate() {
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !confirmPassword) {
       setError({
         name: !name,
         email: !email,
-        password: !password
+        password: !password,
+        confirmPassword: !confirmPassword
       })
-      setErrorMessage("All fields must be specified.");
+      setErrorMessage("Please make sure all fields are specified");
     } else {
-      const userExists = users.filter(user => user.email === email.toLowerCase())
-      if (userExists.length > 0) {
-        setError({
-          ...error, email: false
-        })
-        setErrorMessage("The email you entered is already used. Please choose a different email or login with the exiting account");
-      } else {
-
+      setErrorMessage("");
+      setError({
+        name: false,
+        email: false,
+        password: false,
+        confirmPassword: false
+      });
+      if(validateEmail() && validatePassword()) {
+        setAuth(true)
       }
     }
   }
@@ -79,6 +128,7 @@ export default function Signup() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 error={error.email}
+                helperText={invalidEmail ? "That email is already used for another account." : ""}
               />
               <TextField
                 id="standard-basic"
@@ -88,6 +138,7 @@ export default function Signup() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 error={error.password}
+                helperText={minPassLen? "Passwords must have a minimum length of 8 characters." : ""}
               />
               <TextField
                 id="standard-basic"
@@ -96,16 +147,15 @@ export default function Signup() {
                 type="password"
                 value={confirmPassword}
                 onChange={(event) => setConfirmPassword(event.target.value)}
-                error={error.password}
+                error={error.confirmPassword}
+                helperText={confirmPWMatch ? "Passwords don't match. Please try again." : ""}
               />
               <Button
                 className="login-submit"
                 color="primary"
                 variant="contained"
                 onClick={() => validate()}
-              >
-                Submit
-              </Button>
+              >Submit</Button>
             </form>
             <span class="login-or">- OR -</span>
             <GoogleLogin
