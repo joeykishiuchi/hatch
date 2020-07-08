@@ -15,13 +15,13 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errors, setErrors] = useState({
-    emptyPassword: false,
-    emptyEmail: false,
-    emptyName: false
-  });
-  const [invalidCred, setInvalidCred] = useState(false);
   const [auth, setAuth] = useState(false);
+  const [error, setError] = useState({
+    name: false,
+    email: false,
+    password: false
+  })
+  const [errorMessage, setErrorMessage] = useState("")
 
   useEffect(() => {
     axios.get("/api/users").then((res) => {
@@ -31,7 +31,24 @@ export default function Signup() {
   }, []);
 
   function validate() {
-    console.log(users)
+    if (!name || !email || !password) {
+      setError({
+        name: !name,
+        email: !email,
+        password: !password
+      })
+      setErrorMessage("All fields must be specified.");
+    } else {
+      const userExists = users.filter(user => user.email === email.toLowerCase())
+      if (userExists.length > 0) {
+        setError({
+          ...error, email: false
+        })
+        setErrorMessage("The email you entered is already used. Please choose a different email or login with the exiting account");
+      } else {
+
+      }
+    }
   }
 
   function googleValidate() {}
@@ -45,7 +62,7 @@ export default function Signup() {
         <div id="login-main">
           <Card>
             <h3>Sign-Up</h3>
-            <Error valid={invalidCred} />
+            <Error errorMessage={errorMessage}/>
             <form>
             <TextField
                 id="standard-basic"
@@ -53,10 +70,7 @@ export default function Signup() {
                 label="Name"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                error={errors.emptyName}
-                helperText={
-                  errors.emptyName ? "Name cannot be empty." : ""
-                }
+                error={error.name}
               />
               <TextField
                 id="standard-basic"
@@ -64,10 +78,7 @@ export default function Signup() {
                 label="Email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                error={errors.emptyEmail}
-                helperText={
-                  errors.emptyEmail ? "Please enter a valid email." : ""
-                }
+                error={error.email}
               />
               <TextField
                 id="standard-basic"
@@ -76,10 +87,7 @@ export default function Signup() {
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                error={errors.emptyPassword}
-                helperText={
-                  errors.emptyPassword ? "Please enter a valid password." : ""
-                }
+                error={error.password}
               />
               <TextField
                 id="standard-basic"
@@ -88,10 +96,7 @@ export default function Signup() {
                 type="password"
                 value={confirmPassword}
                 onChange={(event) => setConfirmPassword(event.target.value)}
-                error={errors.emptyPassword}
-                helperText={
-                  errors.emptyPassword ? "Please enter a valid password." : ""
-                }
+                error={error.password}
               />
               <Button
                 className="login-submit"
