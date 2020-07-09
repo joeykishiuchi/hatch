@@ -95,8 +95,7 @@ export default function Signup() {
         confirmPassword: false
       });
       if(validateEmail() && validatePassword()) {
-        setErrorMessage("");
-        setAuth(true)
+        setAuth(true);
       }
     }
   }
