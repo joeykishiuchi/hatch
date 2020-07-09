@@ -39,7 +39,6 @@ export default function Signup() {
 
   function validateEmail() {
     const emailExists = users.filter(user => user.email === email.toLowerCase())
-    console.log(emailExists)
     if (emailExists.length > 0) {
       setError({
         name: false,
@@ -98,7 +97,22 @@ export default function Signup() {
       });
       if(validateEmail() && validatePassword()) {
         // Successful signup path
-        setAuth(true);
+        console.log("We're here");
+        axios({
+          method: "POST",
+          url: "/api/users",
+          data: {
+            name: name,
+            email: email,
+            password_digest: password
+          }
+        })
+        .then(res => {
+          console.log("new user",res);
+          // Cookies.set("user", currentUser);
+          setAuth(true);
+        })
+        .catch(err => console.log(err));
       }
     }
   }
