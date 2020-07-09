@@ -79,6 +79,7 @@ export default function Signup() {
 
   function validate() {
     if (!name || !email || !password || !confirmPassword) {
+      // Error message and input field highlights when there are missing fields
       setError({
         name: !name,
         email: !email,
@@ -87,6 +88,7 @@ export default function Signup() {
       })
       setErrorMessage("Please make sure all fields are specified");
     } else {
+      // Path for when all input fields are occupied
       setErrorMessage("");
       setError({
         name: false,
@@ -95,6 +97,7 @@ export default function Signup() {
         confirmPassword: false
       });
       if(validateEmail() && validatePassword()) {
+        // Successful signup path
         setAuth(true);
       }
     }
