@@ -17,7 +17,7 @@ function Login() {
     emptyPassword: false,
     emptyEmail: false,
   });
-  const [invalidCred, setInvalidCred] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [auth, setAuth] = useState(false);
 
   // Initial retrieval of all userdata
@@ -41,9 +41,9 @@ function Login() {
       setErrors({ ...errors, emptyPassword: false, emptyEmail: false });
       let currentUser = users.filter((user) => user.email === email)[0];
       if (!currentUser || currentUser.password_digest !== password) {
-        console.log("We cant find an account with that email");
-        setInvalidCred(true);
+        setErrorMessage("We're sorry, the email or password seems to be incorrect.");
       } else {
+        setErrorMessage("")
         Cookies.set("user", currentUser);
         setAuth(true); // redirect to dashboard
       }
@@ -69,7 +69,7 @@ function Login() {
       <div id="login-main">
         <Card>
           <img class="login-logo" src={HatchIcon} alt="logo" />
-          <Error valid={invalidCred} />
+          <Error errorMessage={errorMessage} />
           <form>
             <TextField
               id="standard-basic"
