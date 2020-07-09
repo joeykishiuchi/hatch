@@ -97,7 +97,6 @@ export default function Signup() {
       });
       if(validateEmail() && validatePassword()) {
         // Successful signup path
-        console.log("We're here");
         axios({
           method: "POST",
           url: "/api/users",
@@ -108,8 +107,7 @@ export default function Signup() {
           }
         })
         .then(res => {
-          console.log("new user",res);
-          // Cookies.set("user", currentUser);
+          Cookies.set("user", res.data.user);
           setAuth(true);
         })
         .catch(err => console.log(err));
