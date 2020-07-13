@@ -7,6 +7,7 @@ import Error from "./Error";
 import Card from "@material-ui/core/Card";
 import Cookies from "js-cookie";
 import Nav from "./Nav";
+import "./Signup.scss";
 
 export default function Signup() {
   // All current users in DB
@@ -123,14 +124,14 @@ export default function Signup() {
     <>
       <Nav />
       <div>
-        <div id="login-main">
+        <div id="signup-main">
           <Card>
-            <h3>Sign-Up</h3>
+            <h3 class="signup-title">Sign-Up</h3>
             <Error errorMessage={errorMessage}/>
             <form>
             <TextField
                 id="standard-basic"
-                className="login-input"
+                className="signup-input"
                 label="Name"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
@@ -138,7 +139,7 @@ export default function Signup() {
               />
               <TextField
                 id="standard-basic"
-                className="login-input"
+                className="signup-input"
                 label="Email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
@@ -147,7 +148,7 @@ export default function Signup() {
               />
               <TextField
                 id="standard-basic"
-                className="login-input"
+                className="signup-input"
                 label="Password"
                 type="password"
                 value={password}
@@ -157,7 +158,7 @@ export default function Signup() {
               />
               <TextField
                 id="standard-basic"
-                className="login-input"
+                className="signup-input"
                 label="Confirm Password"
                 type="password"
                 value={confirmPassword}
@@ -166,13 +167,13 @@ export default function Signup() {
                 helperText={confirmPWMatch ? "Passwords don't match. Please try again." : ""}
               />
               <Button
-                className="login-submit"
+                className="signup-submit"
                 color="primary"
                 variant="contained"
                 onClick={() => validate()}
               >Submit</Button>
             </form>
-            <span class="login-or">- OR -</span>
+            <span class="signup-or">- OR -</span>
             <GoogleLogin
               className="google-login"
               theme="dark"

@@ -71,7 +71,7 @@ function Login() {
       <div>
         <div id="login-main">
           <Card>
-            <img class="login-logo" src={HatchIcon} alt="logo" />
+            <h3 class="login-title">Login</h3>
             <Error errorMessage={errorMessage} />
             <form>
               <TextField
