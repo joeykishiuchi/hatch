@@ -14,13 +14,8 @@ export default function Nav(props) {
       return <ProfileButton />
     } else {
       if (props.page === 'login') {
-        console.log("On Login Page");
-        
         return <a class="nav-link" href="/signup">Sign-Up</a> 
       } else {
-        
-        console.log("On Sign-up Page", props.page);
-        
         return <a class="nav-link" href="/login">Login</a>
       }
     }

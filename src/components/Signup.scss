@@ -2,7 +2,7 @@ $darkGrey: #1f1f1f;
 $mediumGrey: #262626;
 $lightGrey: #1f1f1f;
 $hatchBlue: #63aba5;
-$hatchError: #a14061;
+$hatchError: #FF0000;
 
 #root {
   overflow: -moz-hidden-unscrollable;
@@ -34,7 +34,6 @@ $hatchError: #a14061;
     }
     .MuiFormHelperText-root.Mui-error {
       color: $hatchError;
-      font-size: 1em;
     }
 
     h1 {
