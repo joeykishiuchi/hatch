@@ -121,7 +121,7 @@ export default function PackingListItem(props) {
     "avatar--orange": props.user.avatar === "#d1a773",
     "avatar--yellow": props.user.avatar === "#e3e0ac", 
     "avatar--green": props.user.avatar === "#74a381",
-    "avatar--blue": !props.user.avatar === "#4a63b0",
+    "avatar--blue": props.user.avatar === "#4a63b0",
     "avatar--default": !props.user.avatar
   })
 

@@ -39,7 +39,6 @@ export default function PackingList(props) {
             {/* Shows all packing list items */}
             {props.packingList.map((item) => {
               const itemUser = props.users.filter(user => user.id === item.packing_item.user_id);
-              console.log('USER',itemUser);
               
               return (
                 <PackingListItem

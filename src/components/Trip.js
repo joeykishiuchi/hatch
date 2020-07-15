@@ -90,6 +90,7 @@ export default function Trip(props) {
               getData={getData}
               destination={modes[dest].destination}
               components={modes[dest].components}
+              users={users}
             />
           );
         }
