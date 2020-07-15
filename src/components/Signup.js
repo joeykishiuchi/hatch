@@ -77,6 +77,12 @@ export default function Signup() {
     return false;
   }
 
+  function randomAvatar() {
+    const colors = ['#6f5782', '#d6b0d6', '#9e5454', '#a7cdcf', '#d1a773', '#e3e0ac', '#74a381', '#4a63b0']
+    const random_index = Math.floor(Math.random() * 8)
+    return colors[random_index];
+  }
+
   function validate() {
     if (!name || !email || !password || !confirmPassword) {
       // Error message and input field highlights when there are missing fields
@@ -104,7 +110,8 @@ export default function Signup() {
           data: {
             name: name,
             email: email,
-            password_digest: password
+            password_digest: password,
+            avatar: randomAvatar()
           }
         })
         .then(res => {
