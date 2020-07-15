@@ -10,22 +10,12 @@ import Cookies from "js-cookie"
 
 export default function PackingList(props) {
   const [newItem, setNewItem] = useState(false);
-  const [users, setUsers] = useState([])
 
   const activeUser = JSON.parse(Cookies.get('user'));
 
   const addPackingListItem = () => {
     setNewItem(true);
   };
-
-  useEffect(() => {
-    axios
-    .get("/api/users")
-    .then((res) => {
-      const users = res.data.map((user) => user.user);
-      setUsers(users);
-    });
-  }, []);
 
   const newInput = newItem ? (
     <PackingListItem
@@ -48,10 +38,10 @@ export default function PackingList(props) {
           <div>
             {/* Shows all packing list items */}
             {props.packingList.map((item) => {
-              const itemUser = users.filter(user => user.id === item.packing_item.user_id)
-        
-              return itemUser.length > 0
-              ? (
+              const itemUser = props.users.filter(user => user.id === item.packing_item.user_id);
+              console.log('USER',itemUser);
+              
+              return (
                 <PackingListItem
                   key={item.packing_item.id}
                   id={item.packing_item.id}
@@ -62,8 +52,7 @@ export default function PackingList(props) {
                   getData={props.getData}
                   user={itemUser[0]}
                 />
-              ) 
-              : null;
+              );
             })}
             {/* Shows new input field */}
             {newInput}
