@@ -36,7 +36,6 @@ export default function ProfileButton() {
 
   return (
     <div class="right-menu">
-      {console.log("COLORL:",user.avatar)}
       {
         <div id="profile-icon">
           <IconButton
