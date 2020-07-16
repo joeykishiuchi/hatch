@@ -23,7 +23,14 @@ export default function UserSearch(props) {
   }, []);
 
 function filteredOptions() {
-  const filteredUsers = users.filter(user => user.id !== currentUser.id)
+  let filteredUsers = users.filter(user => user.id !== currentUser.id);
+
+  if (props.collaborators.length > 0) {
+    props.collaborators.map(collaborator => {
+      filteredUsers = filteredUsers.filter(user => user.id !== collaborator.id)
+    })
+  }
+  
   return filteredUsers;
 }
 
